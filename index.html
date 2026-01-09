@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Golden Spoon Restaurant🍽️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ===== GLOBAL ===== */
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #000;
+    color: #fff;
+}
+
+/* ===== NAVIGATION ===== */
+nav {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: 15px 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 1000;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+nav ul li a:hover {
+    color: gold;
+}
+
+/* ===== HERO ===== */
+.hero {
+    height: 100vh;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+    url('https://images.unsplash.com/photo-1552566626-52f8b828add9') center/cover no-repeat;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 3rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-top: 10px;
+}
+
+/* ===== MODAL OVERLAY ===== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    padding: 40px 20px;
+    z-index: 2000;
+    overflow-y: auto;
+}
+
+.modal-content {
+    max-width: 1000px;
+    margin: auto;
+    background: #111;
+    padding: 30px;
+    border-radius: 10px;
+    position: relative;
+}
+
+/* ===== CLOSE BUTTON ===== */
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 25px;
+    cursor: pointer;
+    color: gold;
+}
+
+/* ===== MENU GRID ===== */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.menu-card {
+    background: #1a1a1a;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.6);
+    padding-bottom: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+
+}
+.menu-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 15px 30px rgba(255, 215, 0, 0.4);
+}
+
+.menu-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.menu-card h4 {
+    margin: 10px 0 5px;
+    color: gold;
+}
+
+.menu-card p {
+    font-size: 14px;
+    padding: 0 10px;
+}
+
+.menu-card .price {
+    font-weight: bold;
+    padding: 5px 0;
+}
+
+.menu-card input {
+    width: 60px;
+    padding: 5px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: none;
+    text-align: center;
+}
+
+.menu-card button {
+    background: orange;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.menu-card button:hover {
+    background: gold;
+    color: #000;
+    transform: scale(1.05);
+}
+.menu-card:hover img {
+    transform: scale(1.1);
+}
+
+
+/* ===== CART ===== */
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 5px;
+}
+
+.cart-item button {
+    background: red;
+    color: #fff;
+    padding: 2px 6px;
+    font-size: 12px;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.cart-summary {
+    margin-top: 20px;
+}
+
+/* ===== FORM ===== */
+input, button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: none;
+}
+
+button[type="submit"] {
+    background: gold;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background: orange;
+}
+
+/* ===== FLOATING CART BUTTON ===== */
+#floatingCartBtn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: gold;
+    color: #000;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 3000;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:600px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== NAV ===== -->
+<nav>
+    <ul>
+        <li><a onclick="goHome()">Home</a></li>
+        <li><a onclick="openModal('about')">About</a></li>
+        <li><a onclick="openModal('menu')">Menu</a></li>
+        <li><a onclick="openModal('reservation')">Reservation</a></li>
+        <li><a onclick="openModal('contact')">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- ===== HERO SECTION ===== -->
+<div class="hero" id="home">
+    <div>
+        <h1>Golden Spoon Restaurant</h1>
+        <p>Delicious meals made with love and tradition</p>
+    </div>
+</div>
+
+<!-- ===== ABOUT MODAL ===== -->
+<div class="modal" id="about">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">✖</span>
+        <h2>About Us</h2>
+        <p>
+            Golden Spoon Restaurant offers a modern dining experience with
+            authentic local and continental meals. We pride ourselves on
+            excellent customer service, fresh ingredients, and a relaxing atmosphere. Golden Spoon, Always here with delicious😋 meals.
+        </p>
+    </div>
+</div>
+
+<!-- ===== MENU MODAL ===== -->
+<div class="modal" id="menu">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">✖</span>
+        <h2>Our Menu</h2>
+        <div class="menu-grid">
+            <!-- LOCAL & CONTINENTAL FOOD CARDS (example) -->
+            <div class="menu-card">
+                <img src="images/jollof.jpg" alt="Jollof Rice with Chicken">
+                <h4>Jollof Rice with Chicken</h4>
+                <div class="price">₵25.00</div>
+                <input type="number" min="1" value="1" class="quantity">
+                <button onclick="addToCart('Jollof Rice with Chicken',25,this)">Add to Cart</button>
+            </div>
+
+            <div class="menu-card">
+                <img src="images/beans.jpg" alt="Beans with Plantain">
+                <h4>Beans with Plantain</h4>
+                <div class="price">₵20.00</div>
+                <input type="number" min="1" value="1" class="quantity">
+                <button onclick="addToCart('Beans with Plantain',20,this)">Add to Cart</button>
+            </div>
+
+            <div class="menu-card">
+                <img src="images/beef burger.jpg" alt="Beef Burger">
+                <h4>Beef Burger</h4>
+                <div class="price">₵40.00</div>
+                <input type="number" min="1" value="1" class="quantity">
+                <button onclick="addToCart('Beef Burger',40,this)">Add to Cart</button>
+            </div>
+    
+            <div class="menu-card">
+                <img src="images/grilledchicken.jpg" alt="Grilled Chicken">
+                <h4>Grilled Chicken</h4>
+                <div class="price">₵30.00</div>
+                <input type="number" min="1" value="1" class="quantity">
+                <button onclick="addToCart('Grilled Chicken',30,this)">Add to Cart</button>
+            </div>
+
+            <div class="menu-card">
+                <img src="images/kokonte.jpg" alt="Kokonte with Palm Nut Soup">
+                <h4>Kokonte with Palm Nut Soup</h4>
+                <div class="price">₵40.00</div>
+                <input type="number" min="1" value="1" class="quantity">
+                <button onclick="addToCart('Kokonte with Palm Nut Soup',40,this)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-card">
+                <img src="images/banku.jpg" alt="Banku with Tilapia">
+                <h4>Banku with Tilapia</h4>
+                <div class="price">₵30.00</div>
+                <input type="number" min="1" value="1" class="quantity">
+                <button onclick="addToCart('Banku with Tilapia',30,this)">Add to Cart</button>
+            </div>
+
+            <div class="menu-card">
+                <img src="images/kenkey.jpg" alt="Kenkey with Fish">
+                <h4>Kenkey with Fish</h4>
+                <div class="price">₵20.00</div>
+                <input type="number" min="1" value="1" class="quantity">
+                <button onclick="addToCart('Kenkey with Fish',20,this)">Add to Cart</button>
+            </div>
+
+            <div class="menu-card">
+                <img src="images/fried_rice.jpg" alt="Fried Rice with Chicken">
+                <h4>Fried Rice with Chicken</h4>
+                <div class="price">₵24.00</div>
+                <input type="number" min="1" value="1" class="quantity">
+                <button onclick="addToCart('Fried Rice with Chicken',24,this)">Add to Cart</button>
+            </div>
+
+            <div class="menu-card">
+                <img src="images/fufu.jpg" alt="Fufu with Soup">
+                <h4>Fufu with Soup</h4>
+                <div class="price">₵22.00</div>
+                <input type="number" min="1" value="1" class="quantity">
+                <button onclick="addToCart('Fufu with Soup',22,this)">Add to Cart</button>
+            </div>
+
+            <div class="menu-card">
+                <img src="images/waakye.jpg" alt="Waakye with Fish">
+                <h4>Waakye with Fish</h4>
+                <div class="price">₵28.00</div>
+                <input type="number" min="1" value="1" class="quantity">
+                <button onclick="addToCart('Waakye with Fish',28,this)">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== CART MODAL ===== -->
+<div class="modal" id="cart">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">✖</span>
+        <h2>Your Cart 🛒</h2>
+        <div id="cartItems"></div>
+        <div class="cart-summary">
+            <h3>Total: ₵<span id="cartTotal">0</span></h3>
+            <button onclick="checkout()">Confirm Order</button>
+            <button onclick="clearCart()" style="background:red;margin-top:10px;">Clear Cart</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== RESERVATION MODAL ===== -->
+<div class="modal" id="reservation">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">✖</span>
+        <h2>Book a Table</h2>
+        <form onsubmit="return reserveTable()">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <input type="date" required>
+            <input type="time" required>
+            <button type="submit">Reserve</button>
+        </form>
+    </div>
+</div>
+
+<!-- ===== CONTACT MODAL ===== -->
+<div class="modal" id="contact">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">✖</span>
+        <h2>Contact Us On;</h2>
+        <p>📞 +233 59 549 2789 or +233 20 995 8929</p>
+        <h3>You can locate us at;</h3>
+        <p>📍Dansoman SSNIT Flat-Accra, Ghana</p>
+        <h4> Visit our social media handles; </h4>
+        <p>goldenspoon_34 on Instagram and goldenspoon_34 on Snapchat Also</p>
+        <h4> You can feel free to also reach us on; </h4>
+        <p>📧 goldenspoon34@gmail.com</p>
+        <p></p>
+    </div>
+</div>
+
+<!-- ===== FLOATING CART BUTTON ===== -->
+<button id="floatingCartBtn" onclick="showCart()">🛒 <span id="cartCount">0</span></button>
+
+<script>
+/* ===== CART FUNCTIONALITY ===== */
+let cart = [];
+
+function addToCart(name, price, btn) {
+    const quantityInput = btn.previousElementSibling;
+    const quantity = parseInt(quantityInput.value);
+    if(quantity <= 0) { alert("Quantity must be at least 1"); return; }
+
+    const existing = cart.find(item => item.name === name);
+    if(existing) existing.quantity += quantity;
+    else cart.push({name, price, quantity});
+
+    quantityInput.value = 1;
+    updateCartCount();
+}
+
+// Update floating cart count
+function updateCartCount() {
+    const count = cart.reduce((sum,item)=>sum+item.quantity,0);
+    document.getElementById('cartCount').textContent = count;
+}
+
+// Show cart modal
+function showCart() {
+    openModal('cart');
+    const cartItemsDiv = document.getElementById('cartItems');
+    const cartTotalSpan = document.getElementById('cartTotal');
+    cartItemsDiv.innerHTML = '';
+    let total = 0;
+
+    cart.forEach((item,index)=>{
+        const itemTotal = item.price*item.quantity;
+        total += itemTotal;
+        const div = document.createElement('div');
+        div.className="cart-item";
+        div.innerHTML = `${item.name} - Qty: ${item.quantity} - ₵${itemTotal.toFixed(2)}
+            <button onclick="removeFromCart(${index})">✖</button>`;
+        cartItemsDiv.appendChild(div);
+    });
+
+    cartTotalSpan.textContent = total.toFixed(2);
+}
+
+// Remove item
+function removeFromCart(index) {
+    cart.splice(index,1);
+    showCart();
+    updateCartCount();
+}
+
+// Clear cart
+function clearCart() {
+    cart=[];
+    showCart();
+    updateCartCount();
+}
+
+// Checkout
+function checkout() {
+    if(cart.length===0){ alert("Your cart is empty!"); return; }
+    alert("Thank you! Your order has been placed.");
+    cart=[];
+    closeModal();
+    updateCartCount();
+}
+
+/* ===== MODAL CONTROL ===== */
+function openModal(id){ document.getElementById(id).style.display="block"; }
+function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.style.display="none"); }
+function goHome(){ closeModal(); }
+
+/* ===== RESERVATION ===== */
+function reserveTable(){
+    const name=document.getElementById("name").value;
+    alert("Thank you "+name+"! Your reservation is confirmed.");
+    return false;
+}
+</script>
+
+</body>
+</html>
